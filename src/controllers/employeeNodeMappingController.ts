@@ -9,13 +9,12 @@ import { NodeMaster } from "../entity/NodeMaster";
 const employeeNodeMappingSchema = Joi.object({
   empnodemapId: Joi.number(),
   branchId: Joi.string().required(),
-  date: Joi.date().required(),
   // shift: Joi.string().required(),
   emp: Joi.number().required(),
   node: Joi.number().required(),
   nodeType: Joi.string().required(),
-  default: Joi.string().required(),
-  primary: Joi.string().required(),
+  default: Joi.string().allow('',null),
+  primary: Joi.string().allow('',null),
   userId: Joi.string().required(),
   isActive: Joi.boolean(),
 });
@@ -36,7 +35,6 @@ export const createEmployeeNodeMapping = async (req: Request, res: Response) => 
 
     const employeeNodeMapping = new EmployeeNodeMapping();
     employeeNodeMapping.branchId = req.body.branchId;
-    employeeNodeMapping.date = req.body.date;
     // employeeNodeMapping.shift = shift;
     employeeNodeMapping.emp = employee;
     employeeNodeMapping.node = node;
@@ -87,7 +85,6 @@ export const updateEmployeeNodeMapping = async (req: Request, res: Response) => 
 
     // const employeeNodeMapping = new EmployeeNodeMapping();
     employeeNodeMappingdata.branchId = req.body.branchId;
-    employeeNodeMappingdata.date = req.body.date;
     // employeeNodeMappingdata.shift = shift;
     employeeNodeMappingdata.emp = employee;
     employeeNodeMappingdata.node = node;
@@ -169,7 +166,6 @@ const updateDataemployeeNodeMap = async (data: any) => {
     // const shift = await Shift.findOne(data.shift);
 
     employeeNodeMappingdata.branchId = data.branchId;
-    employeeNodeMappingdata.date = data.date;
     // employeeNodeMappingdata.shift = shift;
     employeeNodeMappingdata.emp = employee;
     employeeNodeMappingdata.node = node;
@@ -210,7 +206,6 @@ const createDataemployeeNodeMap = async (data: any) => {
     const employeeNodeMapping = new EmployeeNodeMapping();
 
     employeeNodeMapping.branchId = data.branchId;
-    employeeNodeMapping.date = data.date;
     // employeeNodeMapping.shift = shift;
     employeeNodeMapping.emp = employee;
     employeeNodeMapping.node = node;

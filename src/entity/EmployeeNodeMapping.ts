@@ -19,9 +19,6 @@ export class EmployeeNodeMapping extends BaseEntity {
   @Column()
   branchId: string;
 
-  @Column()
-  date: Date;
-
   // @ManyToOne(() => Shift, (shift) => shift.empNodeMapping)
   // @JoinColumn({ name: "shift_id" })
   // shift: Shift
@@ -46,10 +43,10 @@ export class EmployeeNodeMapping extends BaseEntity {
   @Column()
   userId: string;
 
-  @Column()
+  @Column({nullable: true})
   default: string;
 
-  @Column()
+  @Column({nullable: true})
   primary: string;
 
   @CreateDateColumn()

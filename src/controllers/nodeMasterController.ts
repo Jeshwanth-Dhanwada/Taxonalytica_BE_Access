@@ -7,7 +7,7 @@ const nodeMasterSchema = Joi.object({
   nodeId: Joi.number(),
   id: Joi.string().required(),
   branchId: Joi.string().required(),
-  nodeCategoryId: Joi.string().required(),
+  nodeCategoryId: Joi.string().allow('', null),
   nodeName: Joi.string().required(),
   itemDescription: Joi.string().allow('', null),
   nodeType: Joi.string().allow('', null),
@@ -16,23 +16,23 @@ const nodeMasterSchema = Joi.object({
   height: Joi.string().required(),
   xPosition: Joi.number().required(),
   yPosition: Joi.number().required(),
-  borderColor: Joi.string().required(),
-  borderWidth: Joi.string().required(),
-  borderStyle: Joi.string().required(),
-  fillColor: Joi.string().required(),
-  fillTransparency: Joi.string().required(),
+  borderColor: Joi.string().allow('', null),
+  borderWidth: Joi.string().allow('', null),
+  borderStyle: Joi.string().allow('', null),
+  fillColor: Joi.string().allow('', null),
+  fillTransparency: Joi.string().allow('', null),
   isRootNode: Joi.boolean().required(),
   isParent: Joi.boolean().required(),
-  formula: Joi.string().required(),
-  fuelUsed: Joi.string().required(),
-  fuelUnitsId: Joi.string().required(),
-  capacity: Joi.string().required(),
-  capacityUnitsId: Joi.string().required(),
-  sourcePosition: Joi.string().required(),
-  targetPosition: Joi.string().required(),
-  FontColor: Joi.string().required(),
-  FontStyle: Joi.string().required(),
-  FontSize: Joi.string().required(),
+  formula: Joi.string().allow('', null),
+  fuelUsed: Joi.string().allow('', null),
+  fuelUnitsId: Joi.string().allow('', null),
+  capacity: Joi.string().allow('', null),
+  capacityUnitsId: Joi.string().allow('', null),
+  sourcePosition: Joi.string().allow('', null),
+  targetPosition: Joi.string().allow('', null),
+  FontColor: Joi.string().allow('', null),
+  FontStyle: Joi.string().allow('', null),
+  FontSize: Joi.string().allow('', null),
   userId: Joi.string().required(),
   borderRadius: Joi.string().allow('', null),
   units1: Joi.string().allow('', null),
@@ -40,6 +40,11 @@ const nodeMasterSchema = Joi.object({
   unit1Measurable: Joi.string().allow('', null),
   unit2Mandatory: Joi.string().allow('', null),
   allowExcessQty: Joi.string().allow('', null),
+  type: Joi.string().allow('', null),
+  parentNode: Joi.string().allow('', null),
+  extent: Joi.string().allow('', null),
+  iconId: Joi.string().allow('', null),
+  
 
 });
 
@@ -90,6 +95,10 @@ export const createNodeMaster = async (req: Request, res: Response) => {
     nodeMaster.unit1Measurable = req.body.unit1Measurable
     nodeMaster.unit2Mandatory = req.body.unit2Mandatory
     nodeMaster.allowExcessQty = req.body.allowExcessQty
+    nodeMaster.type = req.body.type
+    nodeMaster.parentNode = req.body.parentNode
+    nodeMaster.extent = req.body.extent
+    nodeMaster.iconId = req.body.iconId
     await nodeMaster.save();
     return res.status(201).json(nodeMaster);
   } catch (error) {
@@ -159,6 +168,10 @@ export const createBulkNodeMaster = async (req: Request, res: Response) => {
         nodeMaster.unit1Measurable = element.unit1Measurable
         nodeMaster.unit2Mandatory = element.unit2Mandatory
         nodeMaster.allowExcessQty = element.allowExcessQty
+        nodeMaster.type = element.type
+        nodeMaster.parentNode = element.parentNode
+        nodeMaster.extent = element.extent
+        nodeMaster.iconId = element.iconId
         responseData.push(await nodeMaster.save());
 
       }
@@ -232,6 +245,10 @@ export const updateNodeMaster = async (req: Request, res: Response) => {
     nodeMaster.unit1Measurable = req.body.unit1Measurable
     nodeMaster.unit2Mandatory = req.body.unit2Mandatory
     nodeMaster.allowExcessQty = req.body.allowExcessQty
+    nodeMaster.type = req.body.type
+    nodeMaster.parentNode = req.body.parentNode
+    nodeMaster.extent = req.body.extent
+    nodeMaster.iconId = req.body.iconId
 
     await nodeMaster.save();
     return res.json(nodeMaster);
@@ -369,6 +386,9 @@ const updateDataNodeMaster = async (data: any) => {
     nodeMaster.unit1Measurable = data.unit1Measurable
     nodeMaster.unit2Mandatory = data.unit2Mandatory
     nodeMaster.allowExcessQty = data.allowExcessQty
+    nodeMaster.parentNode = data.parentNode
+    nodeMaster.extent = data.extent
+    nodeMaster.iconId = data.iconId
 
     await nodeMaster.save();
     return nodeMaster
@@ -425,6 +445,10 @@ const createDataNodeMaster = async (data: any) => {
     nodeMaster.unit1Measurable = data.unit1Measurable
     nodeMaster.unit2Mandatory = data.unit2Mandatory
     nodeMaster.allowExcessQty = data.allowExcessQty
+    nodeMaster.type = data.type
+    nodeMaster.parentNode = data.parentNode
+    nodeMaster.iconId = data.iconId
+    nodeMaster.extent = data.extent
     await nodeMaster.save();
 
     return nodeMaster

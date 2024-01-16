@@ -4,13 +4,12 @@ import {
 } from "../controllers/RouteMasterController";
 
 let router = express.Router();
-const authorize = require('../middleware/authorize');
 
 router.get("/",getAllRouteMaster);
-router.post("/",authorize("route_master", "create"), createRouteMaster);
+router.post("/", createRouteMaster);
 router.get("/:id",routeMasterById);
-router.put("/:id",authorize("route_master", "update"), updateRouteMaster);
-router.delete("/:id",authorize("route_master", "delete"), deleteRouteMaster);
+router.put("/:id", updateRouteMaster);
+router.delete("/:id", deleteRouteMaster);
 
 
 export = router;

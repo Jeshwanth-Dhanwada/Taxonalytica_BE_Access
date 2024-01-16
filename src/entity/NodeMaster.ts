@@ -23,7 +23,7 @@ export class NodeMaster extends BaseEntity {
   @Column()
   branchId: string;
 
-  @Column()
+  @Column({ nullable: true })
   nodeCategoryId: string;
 
   @Column({ nullable: true })
@@ -54,19 +54,19 @@ export class NodeMaster extends BaseEntity {
   @Column()
   yPosition: number;
 
-  @Column()
+  @Column({ nullable: true })
   borderColor: string;
 
-  @Column()
+  @Column({ nullable: true })
   borderWidth: string;
 
-  @Column()
+  @Column({ nullable: true })
   borderStyle: string;
 
-  @Column()
+  @Column({ nullable: true })
   fillColor: string;
 
-  @Column()
+  @Column({ nullable: true })
   fillTransparency: string;
 
   @Column({ default: false })
@@ -75,34 +75,34 @@ export class NodeMaster extends BaseEntity {
   @Column({ default: false })
   isParent: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   formula: string;
 
-  @Column()
+  @Column({ nullable: true })
   fuelUsed: string;
 
   @Column({ default: false })
   fuelUnitsId: string;
 
-  @Column()
+  @Column({ nullable: true })
   capacity: string;
 
   @Column({ default: false })
   capacityUnitsId: string;
 
-  @Column()
+  @Column({ nullable: true })
   sourcePosition: string;
 
-  @Column()
+  @Column({ nullable: true })
   targetPosition: string;
 
-  @Column()
+  @Column({ nullable: true })
   FontColor: string;
 
-  @Column()
+  @Column({ nullable: true })
   FontStyle: string;
 
-  @Column()
+  @Column({ nullable: true })
   FontSize: string;
 
   @Column({ nullable: true })
@@ -116,6 +116,18 @@ export class NodeMaster extends BaseEntity {
 
   @Column({ nullable: true })
   unit2Mandatory: string;
+
+  @Column({ nullable: true })
+  type: string;
+
+  @Column({nullable: true })
+  parentNode:string;
+
+  @Column({nullable: true })
+  extent:string;
+
+  @Column({nullable: true })
+  iconId:string;
 
   @Column({ nullable: true })
   allowExcessQty: string;
