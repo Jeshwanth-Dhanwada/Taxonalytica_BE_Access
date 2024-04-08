@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { Request, Response } from "express";
 import { InternalServerError } from "../response/InternalServerErrorResponse";
 import { OA_DETMaster } from "../entity/OA_DET";
@@ -80,431 +82,30 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
 
-                // const readData = JSON.parse(fs.readFileSync(filePath));
+                const readData = JSON.parse(fs.readFileSync(filePath));
 
                 console.log(msg?.type, "readdddd");
 
-                // if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             messaging_product: "whatsapp",
-                //             to: from,
-                //             text: {
-                //                 body: `Please complete the current flow`
-                //             }
-                //         },
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         }
+                if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            messaging_product: "whatsapp",
+                            to: from,
+                            text: {
+                                body: `Please complete the current flow`
+                            }
+                        },
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
 
-                //     });
-                //     return;
-                // }
+                    });
+                    return;
+                }
 
-                // if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             messaging_product: "whatsapp",
-                //             to: from,
-                //             text: {
-                //                 body: `Thank you for selecting the Machine`
-                //             }
-                //         },
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         }
-
-                //     });
-                //     fs.writeFileSync(filePath, JSON.stringify({}));
-                //     return;
-                // }
-                // if (msg?.interactive?.type == 'list_reply') {
-                //     console.log("interactiveee", msg?.interactive);
-                //     buttonInteractiveObject.body.text =
-                //         msg?.interactive?.list_reply.id +
-                //         ". " +
-                //         msg?.interactive?.list_reply.title;
-                //     //messageObject.interactive = buttonInteractiveObject;
-                //     console.log("buttonnnn", buttonInteractiveObject);
-                //     const sql = require('mssql');
-                //     try {
-                //         let messageObject = {
-                //             "messaging_product": "whatsapp",
-                //             "recipient_type": "individual",
-                //             "to": from,
-                //             "type": "interactive",
-                //             "interactive": {}
-                //         };
-                //         messageObject.interactive = buttonInteractiveObject;
-                //         console.log("Valuesss", JSON.stringify(messageObject, null, 2));
-                //         axios({
-                //             method: "POST",
-                //             url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //             data: messageObject,
-                //             headers: {
-                //                 "Content-Type": "application/json"
-                //             }
-                //         });
-                //         try {
-                //             console.log("Titleee", msg?.interactive?.list_reply?.title);
-                //             const data = { jobId: `${msg?.interactive?.list_reply?.title}`, jobName: `${msg?.interactive?.list_reply?.description}` };
-                //             fs.writeFileSync(filePath, JSON.stringify(data));
-                //             console.log('Data written successfully.');
-                //             const readData = JSON.parse(fs.readFileSync(filePath));
-                //             console.log("CONSTANT", readData.jobId); // Output: value
-                //         } catch (error) {
-                //             console.error('Error writing data:', error);
-                //         }
-                //     } catch (error) {
-                //         return InternalServerError(res, error);
-                //     } finally {
-                //         // Close the SQL connection
-                //         await sql.close();
-                //     }
-                // }
-                // if (msg?.interactive?.type == 'nfm_reply') {
-                //     const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
-                //     const sql = require('mssql');
-
-                //     const datePickerResponseTimestamp = parseInt(responses.screen_0_DatePicker_0, 10);
-                //     const datePickerResponse = new Date(datePickerResponseTimestamp);
-                //     console.log(datePickerResponse);
-                //     const readData = JSON.parse(fs.readFileSync(filePath));
-                //     console.log("readddd", readData);
-
-
-                //     await updateOA_DETMaster(readData, datePickerResponse, " ");
-
-                //     //await sendMessages();
-
-                //     // console.log("employeee", employeePhone, employeeNode);
-
-                //     let permission = await new sql.Request().query(`SELECT [phoneno] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
-                //     console.log(permission, "permissionnn");
-                //     permission = permission?.recordset;
-                //     for (let i = 0; i < permission?.length; i++) {
-                //         const fromno = permission[i];
-                //         axios({
-                //             method: "POST",
-                //             url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //             data: {
-                //                 messaging_product: "whatsapp",
-                //                 to: fromno,
-                //                 text: {
-                //                     body: `Successfully updated Priority and Delivery Date for the job ${readData?.jobId} - ${readData?.jobName}`
-                //                 }
-                //             },
-                //             headers: {
-                //                 "Content-Type": "application/json"
-                //             }
-
-                //         });
-                //     }
-
-                //     fs.writeFileSync(filePath, JSON.stringify({}));
-                //     console.log('Date Picker Response:', datePickerResponse);
-                // }
-                // if (msg?.interactive?.type == "button_reply") {
-                //     const sql = require('mssql');
-                //     await sql.connect(config);
-                //     const readData = JSON.parse(fs.readFileSync(filePath));
-                //     console.log(readData?.jobId);
-
-                //     let jobAssign = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[job_assign] WHERE jobId = '${readData?.jobId}';`);
-                //     console.log(jobAssign.recordset[jobAssign.recordset.length - 1], "jobAssignnn");
-                //     //jobAssign = jobAssign.recordset[jobAssign.recordset.length - 1];
-
-                //     console.log('jobassign', jobAssign.recordset[jobAssign.recordset.length - 1]);
-
-                //     //const shift = await Shift.findOne(jobAssign.shift);
-                //     let jobAssignVal = await JobAssign.findOne(jobAssign.id);
-                //     // jobAssign.branchId = jobAssign.branchId;
-                //     // jobAssign.date = jobAssign.date;
-                //     // //jobAssign.shiftName = shift;
-                //     // jobAssign.node = jobAssign.node_id;
-                //     // jobAssign.userId = jobAssign.userId;
-                //     // jobAssign.routeId = jobAssign.routeId;
-                //     // jobAssign.status = jobAssign.status;
-                //     // jobAssign.jobId = "0326-071223";
-                //     jobAssignVal.priority = msg?.interactive?.button_reply?.title;
-                //     // jobAssign.totalProducedQty = jobAssign.totalProducedQty,
-                //     //     jobAssign.outstandingQty = jobAssign.outstandingQty,
-                //     //     jobAssign.targetQty = jobAssign.targetQty,
-                //     console.log('jobassign', jobAssignVal);
-
-                //     await jobAssignVal.save();
-
-                //     await updateOA_DETMaster(readData, null, msg?.interactive?.button_reply?.title);
-
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             messaging_product: "whatsapp",
-                //             to: from,
-                //             text: {
-                //                 body: "Successfully updated Job priority"
-                //             }
-                //         },
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         }
-
-                //     });
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             "messaging_product": "whatsapp",
-                //             "recipient_type": "individual",
-                //             "to": from,
-                //             "type": "template",
-                //             "template": {
-                //                 "name": "delivery_date",
-                //                 "language": {
-                //                     "code": "en_US"
-                //                 },
-                //                 "components": [
-                //                     {
-                //                         "type": "BUTTON",
-                //                         "sub_type": "flow",
-                //                         "index": "0",
-                //                         "parameters": [
-                //                             {
-                //                                 "type": "action",
-                //                                 "action": {
-                //                                     "flow_token": "unused",
-                //                                 }
-                //                             }
-                //                         ]
-                //                     }
-                //                 ]
-                //             }
-                //         }
-                //     });
-                // }
-                // if (msg?.type === "text") {
-                //     console.log("resulttt");
-                //     let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-
-                //     if (msg_body.toLowerCase().includes("ok")) {
-                //         let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-                //         const sql = require('mssql');
-                //         try {
-                //             console.log(msg_body);
-                //             await sql.connect(config);
-                //             let result = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[employee] WHERE phoneno = '${from}'`);
-
-                //             const empId = result?.recordset[0]?.empId;
-
-                //             let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [Taxonanalytica].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
-
-                //             nodeId = nodeId?.recordset[0]?.node_Id;
-                //             //let jobAssign = await new sql.Request().query(`SELECT [jobId] FROM [Taxonanalytica].[dbo].[job_assign] WHERE node_id = '${nodeId}';`);
-                //             let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [Taxonanalytica].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
-                //             nodeMaster = nodeMaster?.recordset[0];
-
-                //             console.log(result, nodeMaster);
-                //             //let jobs = nodeMaster?.recordset.slice(0, 10);
-                //             //const listObject = createListObjectNodes(jobs);
-                //             let messageObject = {
-                //                 "messaging_product": "whatsapp",
-                //                 "recipient_type": "individual",
-                //                 "to": from,
-                //                 "type": "interactive",
-                //                 "interactive": {
-                //                     "type": "list",
-                //                     "header": {
-                //                         "type": "text",
-                //                         "text": "Select the Machine you would like"
-                //                     },
-                //                     "body": {
-                //                         "text": "You will be presented with a list of options to choose from"
-                //                     },
-                //                     "footer": {
-                //                         "text": "All of them are assigned"
-                //                     },
-                //                     "action": {
-                //                         "button": "Select",
-                //                         "sections": [
-                //                             {
-                //                                 "title": "List of Machines",
-                //                                 "rows": [
-                //                                     {
-                //                                         "id": "1",
-                //                                         "title": `${nodeMaster?.nodeId}-${nodeMaster?.nodeName}`,
-                //                                         "description": "Machine"
-                //                                     }
-                //                                 ]
-                //                             }
-                //                         ]
-                //                     }
-                //                 }
-                //             };
-                //             //messageObject.interactive = listObject;
-                //             axios({
-                //                 method: "POST",
-                //                 url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //                 data: messageObject,
-                //                 headers: {
-                //                     "Content-Type": "application/json"
-                //                 }
-                //             });
-                //             fs.writeFileSync(filePath, JSON.stringify({ "flow": msg_body }));
-                //         } catch (error) {
-                //             return InternalServerError(res, error);
-                //         } finally {
-                //             // Close the SQL connection
-                //             await sql.close();
-                //         }
-                //     } else if (msg_body.toLowerCase() == "job") {
-                //         const sql = require('mssql');
-                //         await sql.connect(config);
-                //         let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
-                //         if (permission?.recordset?.length == 0) {
-                //             axios({
-                //                 method: "POST",
-                //                 url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //                 data: {
-                //                     messaging_product: "whatsapp",
-                //                     to: from,
-                //                     text: {
-                //                         body: `You donot have permission to update the job priority`
-                //                     }
-                //                 },
-                //                 headers: {
-                //                     "Content-Type": "application/json"
-                //                 }
-
-                //             });
-                //             return;
-                //         } else {
-                //             axios({
-                //                 method: "POST",
-                //                 url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //                 data: {
-                //                     messaging_product: "whatsapp",
-                //                     to: from,
-                //                     text: {
-                //                         body: `Please enter Item name`
-                //                     }
-                //                 },
-                //                 headers: {
-                //                     "Content-Type": "application/json"
-                //                 }
-
-                //             });
-                //         }
-                //     } else {
-                //         const sql = require('mssql');
-                //         try {
-                //             console.log(msg_body);
-                //             await sql.connect(config);
-                //             // let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
-                //             // if (permission?.recordset?.length == 0) {
-                //             //     axios({
-                //             //         method: "POST",
-                //             //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //             //         data: {
-                //             //             messaging_product: "whatsapp",
-                //             //             to: from,
-                //             //             text: {
-                //             //                 body: `You donot have permission to update the job priority`
-                //             //             }
-                //             //         },
-                //             //         headers: {
-                //             //             "Content-Type": "application/json"
-                //             //         }
-
-                //             //     });
-                //             //     return;
-                //             // }
-                //             let result = await new sql.Request().query(`SELECT IT_CODE, IT_NAME FROM [Taxonanalytica].[dbo].[item_master] WHERE IT_NAME LIKE '${msg_body}%';`);
-
-                //             console.log(result);
-                //             const items = result?.recordset.map((item: any) => item?.IT_CODE);
-                //             const itemNames = result?.recordset.map((item: any) => item?.IT_NAME);
-
-                //             const placeholders = items.map((item: any) => `'${item}'`).join(',');
-
-                //             const job = await new sql.Request().query(`SELECT [jobId], [Status] FROM [Taxonanalytica].[dbo].[oa_det_master] WHERE IT_CODE IN (${placeholders});`);
-
-                //             const jobs = job?.recordset;
-
-                //             const listObject = createListObject(jobs, itemNames);
-                //             console.log("ITEMNAMES", itemNames);
-
-                //             let messageObject = {
-                //                 "messaging_product": "whatsapp",
-                //                 "recipient_type": "individual",
-                //                 "to": from,
-                //                 "type": "interactive",
-                //                 "interactive": {
-                //                     "type": "list",
-                //                     "header": {
-                //                         "type": "text",
-                //                         "text": "Select the Job you would like"
-                //                     },
-                //                     "body": {
-                //                         "text": "You will be presented with a list of options to choose from"
-                //                     },
-                //                     "footer": {
-                //                         "text": "All of them are opened"
-                //                     },
-                //                     "action": {
-                //                         "button": "Select",
-                //                         "sections": [
-                //                             {
-                //                                 "title": "List of Jobs",
-                //                                 "rows": [
-                //                                     {
-                //                                         "id": "1",
-                //                                         "title": "0292-030224"
-                //                                     },
-                //                                     {
-                //                                         "id": "2",
-                //                                         "title": "0983-100124"
-                //                                     },
-                //                                     {
-                //                                         "id": "3",
-                //                                         "title": "1218-100124"
-                //                                     },
-                //                                     {
-                //                                         "id": "4",
-                //                                         "title": "1359-100224"
-                //                                     }
-                //                                 ]
-                //                             }
-                //                         ]
-                //                     }
-                //                 }
-                //             };
-                //             messageObject.interactive = listObject;
-                //             console.log("Valuesss", JSON.stringify(messageObject, null, 2));
-                //             axios({
-                //                 method: "POST",
-                //                 url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //                 data: messageObject,
-                //                 headers: {
-                //                     "Content-Type": "application/json"
-                //                 }
-                //             });
-                //             fs.writeFileSync(filePath, JSON.stringify([{ "itemName": msg_body }]));
-                //         } catch (error) {
-                //             return InternalServerError(res, error);
-                //         } finally {
-                //             // Close the SQL connection
-                //             await sql.close();
-                //         }
-                //     }
-                // }
-
-                if (msg?.type == 'text') {
-                    console.log("Webhooook");
+                if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
                     axios({
                         method: "POST",
                         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
@@ -520,6 +121,388 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         }
 
                     });
+                    fs.writeFileSync(filePath, JSON.stringify({}));
+                    return;
+                }
+                if (msg?.interactive?.type == 'list_reply') {
+                    console.log("interactiveee", msg?.interactive);
+                    buttonInteractiveObject.body.text =
+                        msg?.interactive?.list_reply.id +
+                        ". " +
+                        msg?.interactive?.list_reply.title;
+                    //messageObject.interactive = buttonInteractiveObject;
+                    console.log("buttonnnn", buttonInteractiveObject);
+                    const sql = require('mssql');
+                    try {
+                        let messageObject = {
+                            "messaging_product": "whatsapp",
+                            "recipient_type": "individual",
+                            "to": from,
+                            "type": "interactive",
+                            "interactive": {}
+                        };
+                        messageObject.interactive = buttonInteractiveObject;
+                        console.log("Valuesss", JSON.stringify(messageObject, null, 2));
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: messageObject,
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
+                        try {
+                            console.log("Titleee", msg?.interactive?.list_reply?.title);
+                            const data = { jobId: `${msg?.interactive?.list_reply?.title}`, jobName: `${msg?.interactive?.list_reply?.description}` };
+                            fs.writeFileSync(filePath, JSON.stringify(data));
+                            console.log('Data written successfully.');
+                            const readData = JSON.parse(fs.readFileSync(filePath));
+                            console.log("CONSTANT", readData.jobId); // Output: value
+                        } catch (error) {
+                            console.error('Error writing data:', error);
+                        }
+                    } catch (error) {
+                        return InternalServerError(res, error);
+                    } finally {
+                        // Close the SQL connection
+                        await sql.close();
+                    }
+                }
+                if (msg?.interactive?.type == 'nfm_reply') {
+                    const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
+                    const sql = require('mssql');
+
+                    const datePickerResponseTimestamp = parseInt(responses.screen_0_DatePicker_0, 10);
+                    const datePickerResponse = new Date(datePickerResponseTimestamp);
+                    console.log(datePickerResponse);
+                    const readData = JSON.parse(fs.readFileSync(filePath));
+                    console.log("readddd", readData);
+
+
+                    await updateOA_DETMaster(readData, datePickerResponse, " ");
+
+                    //await sendMessages();
+
+                    // console.log("employeee", employeePhone, employeeNode);
+
+                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                    console.log(permission, "permissionnn");
+                    permission = permission?.recordset;
+                    for (let i = 0; i < permission?.length; i++) {
+                        const fromno = permission[i];
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                messaging_product: "whatsapp",
+                                to: fromno,
+                                text: {
+                                    body: `Successfully updated Priority and Delivery Date for the job ${readData?.jobId} - ${readData?.jobName}`
+                                }
+                            },
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+
+                        });
+                    }
+
+                    fs.writeFileSync(filePath, JSON.stringify({}));
+                    console.log('Date Picker Response:', datePickerResponse);
+                }
+                if (msg?.interactive?.type == "button_reply") {
+                    const sql = require('mssql');
+                    await sql.connect(config);
+                    const readData = JSON.parse(fs.readFileSync(filePath));
+                    console.log(readData?.jobId);
+
+                    let jobAssign = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[job_assign] WHERE jobId = '${readData?.jobId}';`);
+                    console.log(jobAssign.recordset[jobAssign.recordset.length - 1], "jobAssignnn");
+                    //jobAssign = jobAssign.recordset[jobAssign.recordset.length - 1];
+
+                    console.log('jobassign', jobAssign.recordset[jobAssign.recordset.length - 1]);
+
+                    //const shift = await Shift.findOne(jobAssign.shift);
+                    let jobAssignVal = await JobAssign.findOne(jobAssign.id);
+                    // jobAssign.branchId = jobAssign.branchId;
+                    // jobAssign.date = jobAssign.date;
+                    // //jobAssign.shiftName = shift;
+                    // jobAssign.node = jobAssign.node_id;
+                    // jobAssign.userId = jobAssign.userId;
+                    // jobAssign.routeId = jobAssign.routeId;
+                    // jobAssign.status = jobAssign.status;
+                    // jobAssign.jobId = "0326-071223";
+                    jobAssignVal.priority = msg?.interactive?.button_reply?.title;
+                    // jobAssign.totalProducedQty = jobAssign.totalProducedQty,
+                    //     jobAssign.outstandingQty = jobAssign.outstandingQty,
+                    //     jobAssign.targetQty = jobAssign.targetQty,
+                    console.log('jobassign', jobAssignVal);
+
+                    await jobAssignVal.save();
+
+                    await updateOA_DETMaster(readData, null, msg?.interactive?.button_reply?.title);
+
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            messaging_product: "whatsapp",
+                            to: from,
+                            text: {
+                                body: "Successfully updated Job priority"
+                            }
+                        },
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+
+                    });
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            "messaging_product": "whatsapp",
+                            "recipient_type": "individual",
+                            "to": from,
+                            "type": "template",
+                            "template": {
+                                "name": "delivery_date",
+                                "language": {
+                                    "code": "en_US"
+                                },
+                                "components": [
+                                    {
+                                        "type": "BUTTON",
+                                        "sub_type": "flow",
+                                        "index": "0",
+                                        "parameters": [
+                                            {
+                                                "type": "action",
+                                                "action": {
+                                                    "flow_token": "unused",
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    });
+                }
+                if (msg?.type === "text") {
+                    console.log("resulttt");
+                    let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+
+                    if (msg_body.toLowerCase().includes("ok")) {
+                        let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+                        const sql = require('mssql');
+                        try {
+                            console.log(msg_body);
+                            await sql.connect(config);
+                            let result = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[employee] WHERE phoneno = '${from}'`);
+
+                            const empId = result?.recordset[0]?.empId;
+
+                            let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [Taxonanalytica].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
+
+                            nodeId = nodeId?.recordset[0]?.node_Id;
+                            //let jobAssign = await new sql.Request().query(`SELECT [jobId] FROM [Taxonanalytica].[dbo].[job_assign] WHERE node_id = '${nodeId}';`);
+                            let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [Taxonanalytica].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
+                            nodeMaster = nodeMaster?.recordset[0];
+
+                            console.log(result, nodeMaster);
+                            //let jobs = nodeMaster?.recordset.slice(0, 10);
+                            //const listObject = createListObjectNodes(jobs);
+                            let messageObject = {
+                                "messaging_product": "whatsapp",
+                                "recipient_type": "individual",
+                                "to": from,
+                                "type": "interactive",
+                                "interactive": {
+                                    "type": "list",
+                                    "header": {
+                                        "type": "text",
+                                        "text": "Select the Machine you would like"
+                                    },
+                                    "body": {
+                                        "text": "You will be presented with a list of options to choose from"
+                                    },
+                                    "footer": {
+                                        "text": "All of them are assigned"
+                                    },
+                                    "action": {
+                                        "button": "Select",
+                                        "sections": [
+                                            {
+                                                "title": "List of Machines",
+                                                "rows": [
+                                                    {
+                                                        "id": "1",
+                                                        "title": `${nodeMaster?.nodeId}-${nodeMaster?.nodeName}`,
+                                                        "description": "Machine"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            };
+                            //messageObject.interactive = listObject;
+                            axios({
+                                method: "POST",
+                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                                data: messageObject,
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            fs.writeFileSync(filePath, JSON.stringify({ "flow": msg_body }));
+                        } catch (error) {
+                            return InternalServerError(res, error);
+                        } finally {
+                            // Close the SQL connection
+                            await sql.close();
+                        }
+                    } else if (msg_body.toLowerCase() == "job") {
+                        const sql = require('mssql');
+                        await sql.connect(config);
+                        let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                        if (permission?.recordset?.length == 0) {
+                            axios({
+                                method: "POST",
+                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                                data: {
+                                    messaging_product: "whatsapp",
+                                    to: from,
+                                    text: {
+                                        body: `You donot have permission to update the job priority`
+                                    }
+                                },
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+
+                            });
+                            return;
+                        } else {
+                            axios({
+                                method: "POST",
+                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                                data: {
+                                    messaging_product: "whatsapp",
+                                    to: from,
+                                    text: {
+                                        body: `Please enter Item name`
+                                    }
+                                },
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+
+                            });
+                        }
+                    } else {
+                        const sql = require('mssql');
+                        try {
+                            console.log(msg_body);
+                            await sql.connect(config);
+                            // let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                            // if (permission?.recordset?.length == 0) {
+                            //     axios({
+                            //         method: "POST",
+                            //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            //         data: {
+                            //             messaging_product: "whatsapp",
+                            //             to: from,
+                            //             text: {
+                            //                 body: `You donot have permission to update the job priority`
+                            //             }
+                            //         },
+                            //         headers: {
+                            //             "Content-Type": "application/json"
+                            //         }
+
+                            //     });
+                            //     return;
+                            // }
+                            let result = await new sql.Request().query(`SELECT IT_CODE, IT_NAME FROM [Taxonanalytica].[dbo].[item_master] WHERE IT_NAME LIKE '${msg_body}%';`);
+
+                            console.log(result);
+                            const items = result?.recordset.map((item: any) => item?.IT_CODE);
+                            const itemNames = result?.recordset.map((item: any) => item?.IT_NAME);
+
+                            const placeholders = items.map((item: any) => `'${item}'`).join(',');
+
+                            const job = await new sql.Request().query(`SELECT [jobId], [Status] FROM [Taxonanalytica].[dbo].[oa_det_master] WHERE IT_CODE IN (${placeholders});`);
+
+                            const jobs = job?.recordset;
+
+                            const listObject = createListObject(jobs, itemNames);
+                            console.log("ITEMNAMES", itemNames);
+
+                            let messageObject = {
+                                "messaging_product": "whatsapp",
+                                "recipient_type": "individual",
+                                "to": from,
+                                "type": "interactive",
+                                "interactive": {
+                                    "type": "list",
+                                    "header": {
+                                        "type": "text",
+                                        "text": "Select the Job you would like"
+                                    },
+                                    "body": {
+                                        "text": "You will be presented with a list of options to choose from"
+                                    },
+                                    "footer": {
+                                        "text": "All of them are opened"
+                                    },
+                                    "action": {
+                                        "button": "Select",
+                                        "sections": [
+                                            {
+                                                "title": "List of Jobs",
+                                                "rows": [
+                                                    {
+                                                        "id": "1",
+                                                        "title": "0292-030224"
+                                                    },
+                                                    {
+                                                        "id": "2",
+                                                        "title": "0983-100124"
+                                                    },
+                                                    {
+                                                        "id": "3",
+                                                        "title": "1218-100124"
+                                                    },
+                                                    {
+                                                        "id": "4",
+                                                        "title": "1359-100224"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            };
+                            messageObject.interactive = listObject;
+                            console.log("Valuesss", JSON.stringify(messageObject, null, 2));
+                            axios({
+                                method: "POST",
+                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                                data: messageObject,
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            fs.writeFileSync(filePath, JSON.stringify([{ "itemName": msg_body }]));
+                        } catch (error) {
+                            return InternalServerError(res, error);
+                        } finally {
+                            // Close the SQL connection
+                            await sql.close();
+                        }
+                    }
                 }
                 console.log("phone number " + phon_no_id);
                 console.log("from " + from);

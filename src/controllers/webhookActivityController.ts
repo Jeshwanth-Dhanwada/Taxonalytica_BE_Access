@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { InternalServerError } from "../response/InternalServerErrorResponse";
 import { OA_DETMaster } from "../entity/OA_DET";
 import { JobAssign } from "../entity/JobAssign";
-import { route } from "src/routes/branchRoutes";
 
 const axios = require("axios");
 const fs = require('fs');
@@ -23,7 +22,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
     try {
 
         let body_param = req.body;
-        const token = 'EAADs4mGRLYwBO0cga6vry0tSiR86RKDd7wujFnpSUVQAJ5hCZAtZCDcxSZBiC8t6496Mu7iSiy5NETItzk7xFTZCafZCBjo5NgpMqS2ZAo6d4Q5ZB0Lbmhk36bCPUCqAl2adULI9iGjECltXGoXR4ZC2zEii6ZAdZAUiTFKlUrOWCEicWy3znI595YEe2l6x6FL1i6m2vZCRkvFZBiQc8WrJwanAZCLIznQdqa08epFEZD';
+        const token = 'EAADs4mGRLYwBO8eCwj9iZAheacSnPeZABYGRoHOFS2n0ZBSXHdDkXgJ3RNUqaiz9ZAz9z4sfvGuuFomVeVRnNOJI1Nwb741q0qvUlc4ddb6JXqFbWuuzw3m47ZAPL82Q5Th2aqjpz4nZBRRdgb2U3H35CVAkxX1Ebb8qINvJkxJgDXB9p9uORF0dtDGAXJd9ZCLxyR06stRvMZBFWoJS3KOR6vVlTZCz0mDNese4ZD';
 
         console.log(JSON.stringify(body_param.object, null, 2));
         const buttonInteractiveObject = {
@@ -399,7 +398,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                     data = { ...data, batchId: batchId };
                     readDatas[index] = data;
-                    console.log(data, readDatas[index], "batchhhhhh");
+                    // console.log(data, readDatas[index], "batchhhhhh");
                     fs.writeFileSync(filePath, JSON.stringify(readDatas));
 
                 }
@@ -934,12 +933,12 @@ const updateOA_DETMaster = async (readData: any, date: any, priority: any) => {
     qadet.ProducedQty2 = qadet.ProducedQty2
     qadet.TargetQty = qadet.ALT_QTY * qadet.Circumfrence / 1000
     qadet.Status = qadet.Status
-    qadet.priority = priority ? priority : qadet.priority
     qadet.allowExcessQty = qadet.allowExcessQty
 
     if (date != null) {
         qadet.Delivery_Date = date
     } else {
+        qadet.priority = priority
         qadet.Delivery_Date = null
     }
 
