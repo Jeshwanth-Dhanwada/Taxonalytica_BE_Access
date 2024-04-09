@@ -93,7 +93,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
 
-                const readData = JSON.parse(fs.readFileSync(filePath));
+                const readData = {}; //JSON.parse(fs.readFileSync(filePath));
 
                 console.log(msg?.type, "readdddd");
 
