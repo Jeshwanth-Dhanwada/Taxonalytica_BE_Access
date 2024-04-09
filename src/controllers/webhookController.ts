@@ -5,13 +5,13 @@ import { InternalServerError } from "../response/InternalServerErrorResponse";
 import { OA_DETMaster } from "../entity/OA_DET";
 import { JobAssign } from "../entity/JobAssign";
 import { webhookRequestActivity } from "./webhookActivityController";
-
+import path from "path";
 const axios = require("axios");
 const fs = require('fs');
 //const path = require('path');
 //const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
-const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
-
+//const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
+const filePath = path.resolve(__dirname,"..","..", "constants", "data.json")
 // const config = {
 //     user: 'newuser',
 //     password: 'Root@123',
@@ -93,7 +93,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
 
-                const readData = {}; //JSON.parse(fs.readFileSync(filePath));
+                const readData = JSON.parse(fs.readFileSync(filePath));
 
                 console.log(msg?.type, "readdddd");
 
