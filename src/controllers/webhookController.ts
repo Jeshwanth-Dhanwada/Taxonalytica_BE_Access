@@ -196,7 +196,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
 
                     // console.log("employeee", employeePhone, employeeNode);
 
-                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [Taxonanalytica].[dbo].[employee] WHERE phoneno = '${from}'`);
                     console.log(permission, "permissionnn");
                     permission = permission?.recordset;
                     for (let i = 0; i < permission?.length; i++) {
