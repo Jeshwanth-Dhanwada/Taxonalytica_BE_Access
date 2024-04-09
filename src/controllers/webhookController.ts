@@ -9,7 +9,8 @@ import { webhookRequestActivity } from "./webhookActivityController";
 const axios = require("axios");
 const fs = require('fs');
 //const path = require('path');
-const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
+//const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
+const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
 
 const config = {
     user: 'newuser',
@@ -25,7 +26,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
     try {
         let body_param = req.body;
         console.log(req.body, "reqq");
-        const token = 'EAADs4mGRLYwBO8eCwj9iZAheacSnPeZABYGRoHOFS2n0ZBSXHdDkXgJ3RNUqaiz9ZAz9z4sfvGuuFomVeVRnNOJI1Nwb741q0qvUlc4ddb6JXqFbWuuzw3m47ZAPL82Q5Th2aqjpz4nZBRRdgb2U3H35CVAkxX1Ebb8qINvJkxJgDXB9p9uORF0dtDGAXJd9ZCLxyR06stRvMZBFWoJS3KOR6vVlTZCz0mDNese4ZD';
+        const token = 'EAADs4mGRLYwBOxar26bJeiVL6y5OSpNDgGTbO02a73rnCMiOLcA2immDlLIHzWvRRvIEbfYkSRZCxAjZBpc4e9tZBTSQkvk2TF4ZB5QZBZBxHbPZClZCq6KMH9azMjDsh6EH9lOpGVghg7VIXZBpZClPpZCXKCYBrqpJ1LGjsjWdDkICwWYu2gC8Yb8ijvELjpOhNZAUBQtYYnpVSD2gVqnYFphudRxjxtQDsz0ryOn2ywZDZD';
 
         if (body_param.object) {
             console.log(JSON.stringify(body_param, null, 2));
@@ -86,24 +87,24 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
 
                 console.log(msg?.type, "readdddd");
 
-                if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
-                    axios({
-                        method: "POST",
-                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                        data: {
-                            messaging_product: "whatsapp",
-                            to: from,
-                            text: {
-                                body: `Please complete the current flow`
-                            }
-                        },
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
+                // if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
+                //     axios({
+                //         method: "POST",
+                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                //         data: {
+                //             messaging_product: "whatsapp",
+                //             to: from,
+                //             text: {
+                //                 body: `Please complete the current flow`
+                //             }
+                //         },
+                //         headers: {
+                //             "Content-Type": "application/json"
+                //         }
 
-                    });
-                    return;
-                }
+                //     });
+                //     return;
+                // }
 
                 if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
                     axios({
@@ -288,6 +289,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                             }
                         }
                     });
+                    res.sendStatus(200);
                 }
                 if (msg?.type === "text") {
                     console.log("resulttt");
