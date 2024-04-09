@@ -4,7 +4,8 @@ import { Request, Response } from "express";
 import { InternalServerError } from "../response/InternalServerErrorResponse";
 
 const fs = require('fs');
-const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
+//const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
+const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
 
 export const getTempData = async (_: Request, res: Response) => {
     try {
