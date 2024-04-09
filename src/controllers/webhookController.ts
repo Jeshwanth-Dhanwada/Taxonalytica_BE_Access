@@ -12,11 +12,21 @@ const fs = require('fs');
 //const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
 const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
 
+// const config = {
+//     user: 'newuser',
+//     password: 'Root@123',
+//     server: 'LAPTOP-ODV7LQNH',
+//     database: 'Taxonanalytica',
+//     // options: {
+//     //   encrypt: true, // For Azure SQL Database
+//     // },
+// };
+
 const config = {
-    user: 'newuser',
-    password: 'Root@123',
-    server: 'LAPTOP-ODV7LQNH',
-    database: 'Taxonanalytica',
+    user: 'admin',
+    password: 'Taxonanalytica123',
+    server: 'taxonanalytica-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
+    database: 'taxonanalytica-test-db',
     // options: {
     //   encrypt: true, // For Azure SQL Database
     // },
