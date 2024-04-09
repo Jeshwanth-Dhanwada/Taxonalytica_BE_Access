@@ -378,7 +378,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                     } else if (msg_body.toLowerCase() == "job") {
                         const sql = require('mssql');
                         await sql.connect(config);
-                        let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                        let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[employee] WHERE phoneno = '${from}'`);
                         if (permission?.recordset?.length == 0) {
                             axios({
                                 method: "POST",
