@@ -379,40 +379,40 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         const sql = require('mssql');
                         await sql.connect(config);
                         let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
-                        if (permission?.recordset?.length == 0) {
-                            axios({
-                                method: "POST",
-                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                                data: {
-                                    messaging_product: "whatsapp",
-                                    to: from,
-                                    text: {
-                                        body: `You donot have permission to update the job priority`
-                                    }
-                                },
-                                headers: {
-                                    "Content-Type": "application/json"
-                                }
+                        // if (permission?.recordset?.length == 0) {
+                        //     axios({
+                        //         method: "POST",
+                        //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        //         data: {
+                        //             messaging_product: "whatsapp",
+                        //             to: from,
+                        //             text: {
+                        //                 body: `You donot have permission to update the job priority`
+                        //             }
+                        //         },
+                        //         headers: {
+                        //             "Content-Type": "application/json"
+                        //         }
 
-                            });
-                            return;
-                        } else {
-                            axios({
-                                method: "POST",
-                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                                data: {
-                                    messaging_product: "whatsapp",
-                                    to: from,
-                                    text: {
-                                        body: `Please enter Item name`
-                                    }
-                                },
-                                headers: {
-                                    "Content-Type": "application/json"
+                        //     });
+                        //     return;
+                        // } else {
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                messaging_product: "whatsapp",
+                                to: from,
+                                text: {
+                                    body: `Please enter Item name`
                                 }
+                            },
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
 
-                            });
-                        }
+                        });
+                        //}
                     } else {
                         const sql = require('mssql');
                         try {
