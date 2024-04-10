@@ -206,7 +206,8 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
                         data: {
                             messaging_product: "whatsapp",
-                            to: fromno,
+                            //to: fromno,
+                            to: from,
                             text: {
                                 body: `Successfully updated Priority and Delivery Date for the job ${readData?.jobId} - ${readData?.jobName}`
                             }
