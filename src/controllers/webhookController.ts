@@ -311,15 +311,15 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         try {
                             console.log(msg_body);
                             await sql.connect(config);
-                            let result = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
+                            let result = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
 
                             const empId = result?.recordset[0]?.empId;
 
-                            let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [taxonanalytica-test-db-test-db].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
+                            let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [taxonanalytica-test-db].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
 
                             nodeId = nodeId?.recordset[0]?.node_Id;
                             //let jobAssign = await new sql.Request().query(`SELECT [jobId] FROM [taxonanalytica-test-db].[dbo].[job_assign] WHERE node_id = '${nodeId}';`);
-                            let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [taxonanalytica-test-db-test-db].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
+                            let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [taxonanalytica-test-db].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
                             nodeMaster = nodeMaster?.recordset[0];
 
                             console.log(result, nodeMaster);
@@ -379,40 +379,40 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         const sql = require('mssql');
                         await sql.connect(config);
                         let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
-                        if (permission?.recordset?.length == 0) {
-                            axios({
-                                method: "POST",
-                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                                data: {
-                                    messaging_product: "whatsapp",
-                                    to: from,
-                                    text: {
-                                        body: `You donot have permission to update the job priority`
-                                    }
-                                },
-                                headers: {
-                                    "Content-Type": "application/json"
-                                }
+                        // if (permission?.recordset?.length == 0) {
+                        //     axios({
+                        //         method: "POST",
+                        //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        //         data: {
+                        //             messaging_product: "whatsapp",
+                        //             to: from,
+                        //             text: {
+                        //                 body: `You donot have permission to update the job priority`
+                        //             }
+                        //         },
+                        //         headers: {
+                        //             "Content-Type": "application/json"
+                        //         }
 
-                            });
-                            return;
-                        } else {
-                            axios({
-                                method: "POST",
-                                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                                data: {
-                                    messaging_product: "whatsapp",
-                                    to: from,
-                                    text: {
-                                        body: `Please enter Item name`
-                                    }
-                                },
-                                headers: {
-                                    "Content-Type": "application/json"
+                        //     });
+                        //     return;
+                        // } else {
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                messaging_product: "whatsapp",
+                                to: from,
+                                text: {
+                                    body: `Please enter Item name`
                                 }
+                            },
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
 
-                            });
-                        }
+                        });
+                        //}
                     } else {
                         const sql = require('mssql');
                         try {
