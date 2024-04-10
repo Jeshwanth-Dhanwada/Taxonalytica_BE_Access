@@ -299,7 +299,6 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                             }
                         }
                     });
-                    res.sendStatus(200);
                 }
                 if (msg?.type === "text") {
                     console.log("resulttt");
