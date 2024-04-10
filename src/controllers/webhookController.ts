@@ -196,27 +196,27 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
 
                     // console.log("employeee", employeePhone, employeeNode);
 
-                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
-                    console.log(permission, "permissionnn");
-                    permission = permission?.recordset;
-                    for (let i = 0; i < permission?.length; i++) {
-                        const fromno = permission[i];
-                        axios({
-                            method: "POST",
-                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                            data: {
-                                messaging_product: "whatsapp",
-                                to: fromno,
-                                text: {
-                                    body: `Successfully updated Priority and Delivery Date for the job ${readData?.jobId} - ${readData?.jobName}`
-                                }
-                            },
-                            headers: {
-                                "Content-Type": "application/json"
+                    // let permission = await new sql.Request().query(`SELECT [phoneno] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
+                    // console.log(permission, "permissionnn");
+                    // permission = permission?.recordset;
+                    // for (let i = 0; i < permission?.length; i++) {
+                    //     const fromno = permission[i];
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            messaging_product: "whatsapp",
+                            to: fromno,
+                            text: {
+                                body: `Successfully updated Priority and Delivery Date for the job ${readData?.jobId} - ${readData?.jobName}`
                             }
+                        },
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
 
-                        });
-                    }
+                    });
+                    //}
 
                     fs.writeFileSync(filePath, JSON.stringify({}));
                     console.log('Date Picker Response:', datePickerResponse);
