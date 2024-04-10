@@ -92,8 +92,13 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
+<<<<<<< HEAD
 
                 const readData = JSON.parse(fs.readFileSync(filePath));
+=======
+                console.log(phon_no_id, from, msg, "insideeee**");
+                const readData = {}; //JSON.parse(fs.readFileSync(filePath));
+>>>>>>> c57604833c3d760ead130ce128daf1a6e1598275
 
                 console.log(msg?.type, "readdddd");
 
