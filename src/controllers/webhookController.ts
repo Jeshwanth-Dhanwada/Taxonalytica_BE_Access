@@ -397,21 +397,21 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         //     });
                         //     return;
                         // } else {
-                        // axios({
-                        //     method: "POST",
-                        //     url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                        //     data: {
-                        //         messaging_product: "whatsapp",
-                        //         to: from,
-                        //         text: {
-                        //             body: `Please enter Item name`
-                        //         }
-                        //     },
-                        //     headers: {
-                        //         "Content-Type": "application/json"
-                        //     }
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                messaging_product: "whatsapp",
+                                to: from,
+                                text: {
+                                    body: `Please enter Item name`
+                                }
+                            },
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
 
-                        // });
+                        });
                         //}
                     } else {
                         const sql = require('mssql');
