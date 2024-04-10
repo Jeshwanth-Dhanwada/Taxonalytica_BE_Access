@@ -93,7 +93,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
                 console.log(phon_no_id, from, msg, "insideeee**");
-                const readData = {}; //JSON.parse(fs.readFileSync(filePath));
+                const readData = JSON.parse(fs.readFileSync(filePath));
 
                 console.log(msg?.type, "readdddd");
 
@@ -132,7 +132,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         }
 
                     });
-                    //fs.writeFileSync(filePath, JSON.stringify({}));
+                    fs.writeFileSync(filePath, JSON.stringify({}));
                     return;
                 }
                 if (msg?.interactive?.type == 'list_reply') {
@@ -219,7 +219,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                     });
                     //}
 
-                    //fs.writeFileSync(filePath, JSON.stringify({}));
+                    fs.writeFileSync(filePath, JSON.stringify({}));
                     console.log('Date Picker Response:', datePickerResponse);
                 }
                 if (msg?.interactive?.type == "button_reply") {
@@ -368,7 +368,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                                     "Content-Type": "application/json"
                                 }
                             });
-                            //fs.writeFileSync(filePath, JSON.stringify({ "flow": msg_body }));
+                            fs.writeFileSync(filePath, JSON.stringify({ "flow": msg_body }));
                         } catch (error) {
                             return InternalServerError(res, error);
                         } finally {
@@ -507,7 +507,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                                     "Content-Type": "application/json"
                                 }
                             });
-                            //fs.writeFileSync(filePath, JSON.stringify([{ "itemName": msg_body }]));
+                            fs.writeFileSync(filePath, JSON.stringify([{ "itemName": msg_body }]));
                         } catch (error) {
                             return InternalServerError(res, error);
                         } finally {
