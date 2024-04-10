@@ -36,7 +36,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
     try {
         let body_param = req.body;
         console.log(req.body, "reqq");
-        const token = 'EAADs4mGRLYwBOxar26bJeiVL6y5OSpNDgGTbO02a73rnCMiOLcA2immDlLIHzWvRRvIEbfYkSRZCxAjZBpc4e9tZBTSQkvk2TF4ZB5QZBZBxHbPZClZCq6KMH9azMjDsh6EH9lOpGVghg7VIXZBpZClPpZCXKCYBrqpJ1LGjsjWdDkICwWYu2gC8Yb8ijvELjpOhNZAUBQtYYnpVSD2gVqnYFphudRxjxtQDsz0ryOn2ywZDZD';
+        const token = 'EAADs4mGRLYwBO0qT3MAAdAr5VPHevUaw6omXrtQ1uoFPZB4UpsrdFbO31EG08htQymnanLZAeZABZAYdXZAx5q5Kh5RHzgBZBY2Q6reiZBS85q5bF7mXiTSfdTLeVkCP4UFPi4UbX8um4Lg1irt2sh76YzbJkhiFZCQaXDOFMbMhRTIswR03XeM1ko7GpZCCX9SidqOop5jTLzLkiMwI0HPdZAhWzZCNnjniCpfZAOUZD';
 
         if (body_param.object) {
             console.log(JSON.stringify(body_param, null, 2));
@@ -350,7 +350,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                                                 "rows": [
                                                     {
                                                         "id": "1",
-                                                        "title": `${nodeMaster?.nodeId}-${nodeMaster?.nodeName}`,
+                                                        "title": `${nodeMaster?.nodeName}`,
                                                         "description": "Machine"
                                                     }
                                                 ]
