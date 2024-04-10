@@ -82,13 +82,13 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
         };
 
         if (body_param.object) {
-            console.log("inside body param" + JSON.stringify(body_param.entry[0].changes[0].value.messages));
+            //console.log("inside body param" + JSON.stringify(body_param.entry[0].changes[0].value.messages));
             if (body_param.entry &&
                 body_param.entry[0].changes &&
                 body_param.entry[0].changes[0].value.messages &&
                 body_param.entry[0].changes[0].value.messages[0]
             ) {
-
+                console.log("inside bodyyyyy");
                 let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
