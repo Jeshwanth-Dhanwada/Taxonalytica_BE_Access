@@ -135,7 +135,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify({}));
                     return;
                 }
-                if (msg?.interactive?.type == 'list_reply') {
+                if (msg?.interactive?.type == 'list_reply' && !readData?.flow) {
                     console.log("interactiveee", msg?.interactive);
                     buttonInteractiveObject.body.text =
                         msg?.interactive?.list_reply.id +
