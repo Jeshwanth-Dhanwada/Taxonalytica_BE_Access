@@ -113,7 +113,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                         }
 
                     });
-                    return;
+                    res.sendStatus(200);
                 }
 
                 if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
