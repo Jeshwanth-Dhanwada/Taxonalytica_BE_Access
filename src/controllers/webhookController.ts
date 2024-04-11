@@ -97,24 +97,24 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
 
                 console.log(msg?.type, "readdddd");
 
-                // if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             messaging_product: "whatsapp",
-                //             to: from,
-                //             text: {
-                //                 body: `Please complete the current flow`
-                //             }
-                //         },
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         }
+                if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            messaging_product: "whatsapp",
+                            to: from,
+                            text: {
+                                body: `Please complete the current flow`
+                            }
+                        },
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
 
-                //     });
-                //     return;
-                // }
+                    });
+                    return;
+                }
 
                 if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
                     axios({
