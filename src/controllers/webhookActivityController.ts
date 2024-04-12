@@ -14,7 +14,7 @@ const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.
 //     user: 'newuser',
 //     password: 'Root@123',
 //     server: 'LAPTOP-ODV7LQNH',
-//     database: 'Taxonanalytica',
+//     database: 'taxonanalytica-test-db',
 //     // options: {
 //     //   encrypt: true, // For Azure SQL Database
 //     // },
@@ -22,9 +22,9 @@ const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.
 
 const config = {
     user: 'admin',
-    password: 'Taxonanalytica123',
-    server: 'taxonanalytica-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
-    database: 'taxonanalytica-test-db',
+    password: 'taxonanalytica-test-db123',
+    server: 'taxonanalytica-test-db-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
+    database: 'taxonanalytica-test-db-test-db',
     // options: {
     //   encrypt: true, // For Azure SQL Database
     // },
@@ -116,15 +116,15 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     try {
                         console.log(msg_body);
                         await sql.connect(config);
-                        let result = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[employee] WHERE phoneno = '${from}'`);
+                        let result = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
 
                         const empId = result?.recordset[0]?.empId;
 
-                        let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [Taxonanalytica].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
+                        let nodeId = await new sql.Request().query(`SELECT [node_Id] FROM [taxonanalytica-test-db].[dbo].[employee_node_mapping] WHERE emp_id = '${empId}'`);
 
                         nodeId = nodeId?.recordset[0]?.node_Id;
-                        //let jobAssign = await new sql.Request().query(`SELECT [jobId] FROM [Taxonanalytica].[dbo].[job_assign] WHERE node_id = '${nodeId}';`);
-                        let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [Taxonanalytica].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
+                        //let jobAssign = await new sql.Request().query(`SELECT [jobId] FROM [taxonanalytica-test-db].[dbo].[job_assign] WHERE node_id = '${nodeId}';`);
+                        let nodeMaster = await new sql.Request().query(`SELECT [nodeId], [nodeName] FROM [taxonanalytica-test-db].[dbo].[node_master] WHERE nodeId = '${nodeId}';`);
                         nodeMaster = nodeMaster?.recordset[0];
 
                         console.log(result, nodeMaster);
@@ -188,18 +188,18 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     //console.log(readData, "readdddd");
                     let node_id = msg?.interactive?.list_reply?.title.split('-')[0];
                     console.log("MSGGGG", node_id);
-                    let jobAssign = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[job_assign] WHERE node_id = '${node_id}';`);
+                    let jobAssign = await new sql.Request().query(`SELECT * FROM [taxonanalytica-test-db].[dbo].[job_assign] WHERE node_id = '${node_id}';`);
 
                     jobAssign = jobAssign?.recordset.filter((item: any) => item?.status != 'Completed');
                     jobAssign = jobAssign?.slice(0, 10);
                     const jobs = jobAssign.map((item: any) => item?.jobId);
                     const placeholders = jobs.map((item: any) => `'${item}'`).join(',');
 
-                    let IT_CODEs = await new sql.Request().query(`SELECT [IT_CODE] FROM [Taxonanalytica].[dbo].[oa_det_master] WHERE jobId IN (${placeholders});`);
+                    let IT_CODEs = await new sql.Request().query(`SELECT [IT_CODE] FROM [taxonanalytica-test-db].[dbo].[oa_det_master] WHERE jobId IN (${placeholders});`);
                     IT_CODEs = IT_CODEs?.recordset?.map((item: any) => item?.IT_CODE);
                     const placeholdersIT = IT_CODEs?.map((item: any) => `'${item}'`).join(',');
 
-                    const itemsRecord = await new sql.Request().query(`SELECT [IT_NAME] FROM [Taxonanalytica].[dbo].[item_master] WHERE IT_CODE IN (${placeholdersIT});`);
+                    const itemsRecord = await new sql.Request().query(`SELECT [IT_NAME] FROM [taxonanalytica-test-db].[dbo].[item_master] WHERE IT_CODE IN (${placeholdersIT});`);
                     console.log(itemsRecord, "jobsssssss");
                     let listObject = createListObjectActivity(jobAssign, itemsRecord?.recordset);
 
@@ -260,16 +260,16 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     const jobId = msg?.interactive?.list_reply?.title;
                     const jobAssignId = msg?.interactive?.list_reply?.id;
 
-                    let oaDetails = await new sql.Request().query(`SELECT [IT_CODE] FROM [Taxonanalytica].[dbo].[oa_det_master] WHERE jobId = '${jobId}';`);
+                    let oaDetails = await new sql.Request().query(`SELECT [IT_CODE] FROM [taxonanalytica-test-db].[dbo].[oa_det_master] WHERE jobId = '${jobId}';`);
                     let fgId = oaDetails?.recordset[0]?.IT_CODE;
 
-                    let nodeDetails = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[node_master];`);
+                    let nodeDetails = await new sql.Request().query(`SELECT * FROM [taxonanalytica-test-db].[dbo].[node_master];`);
                     nodeDetails = nodeDetails?.recordset;
 
-                    let fgDetails = await new sql.Request().query(`SELECT * FROM  [Taxonanalytica].[dbo].[fg_mapping];`);
+                    let fgDetails = await new sql.Request().query(`SELECT * FROM  [taxonanalytica-test-db].[dbo].[fg_mapping];`);
                     fgDetails = fgDetails?.recordset;
 
-                    let batchDetails = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[batch];`);
+                    let batchDetails = await new sql.Request().query(`SELECT * FROM [taxonanalytica-test-db].[dbo].[batch];`);
                     batchDetails = batchDetails?.recordset;
                     if (batchDetails?.length == 0) {
                         axios({
@@ -290,10 +290,10 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                         return;
                     }
 
-                    let routeId = await new sql.Request().query(`SELECT [Route] FROM [Taxonanalytica].[dbo].[item_master] WHERE IT_CODE = '${fgId}';`);
+                    let routeId = await new sql.Request().query(`SELECT [Route] FROM [taxonanalytica-test-db].[dbo].[item_master] WHERE IT_CODE = '${fgId}';`);
                     routeId = routeId?.recordset[0]?.Route;
 
-                    let edgeDetails = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[edge_master];`);
+                    let edgeDetails = await new sql.Request().query(`SELECT * FROM [taxonanalytica-test-db].[dbo].[edge_master];`);
                     edgeDetails = edgeDetails?.recordset;
 
                     const inputValue = edgeDetails.filter((item: any) => item.targetNodeId == nodeId && item.routeId == routeId);
@@ -573,7 +573,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                     // console.log("employeee", employeePhone, employeeNode);
 
-                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                    let permission = await new sql.Request().query(`SELECT [phoneno] FROM [taxonanalytica-test-db].[dbo].[manager] WHERE phoneno = '${from}'`);
                     console.log(permission, "permissionnn");
                     permission = permission?.recordset;
                     for (let i = 0; i < permission?.length; i++) {
@@ -603,7 +603,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     //const readData = JSON.parse(fs.readFileSync(filePath));
                     console.log(readDatas[index]?.jobId);
 
-                    let jobAssign = await new sql.Request().query(`SELECT * FROM [Taxonanalytica].[dbo].[job_assign] WHERE jobId = '${readDatas[index]?.jobId}';`);
+                    let jobAssign = await new sql.Request().query(`SELECT * FROM [taxonanalytica-test-db].[dbo].[job_assign] WHERE jobId = '${readDatas[index]?.jobId}';`);
                     console.log(jobAssign.recordset[jobAssign.recordset.length - 1], "jobAssignnn");
                     //jobAssign = jobAssign.recordset[jobAssign.recordset.length - 1];
 
@@ -684,7 +684,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     if (msg_body.toLowerCase() == "job") {
                         const sql = require('mssql');
                         await sql.connect(config);
-                        let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                        let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[manager] WHERE phoneno = '${from}'`);
                         if (permission?.recordset?.length == 0) {
                             axios({
                                 method: "POST",
@@ -724,7 +724,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                         try {
                             console.log(msg_body);
                             await sql.connect(config);
-                            let permission = await new sql.Request().query(`SELECT [empId] FROM [Taxonanalytica].[dbo].[manager] WHERE phoneno = '${from}'`);
+                            let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[manager] WHERE phoneno = '${from}'`);
                             if (permission?.recordset?.length == 0) {
                                 axios({
                                     method: "POST",
@@ -743,7 +743,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                 });
                                 return;
                             }
-                            let result = await new sql.Request().query(`SELECT IT_CODE, IT_NAME FROM [Taxonanalytica].[dbo].[item_master] WHERE IT_NAME LIKE '${msg_body}%';`);
+                            let result = await new sql.Request().query(`SELECT IT_CODE, IT_NAME FROM [taxonanalytica-test-db].[dbo].[item_master] WHERE IT_NAME LIKE '${msg_body}%';`);
 
                             console.log(result);
                             const items = result?.recordset.map((item: any) => item?.IT_CODE);
@@ -751,7 +751,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                             const placeholders = items.map((item: any) => `'${item}'`).join(',');
 
-                            const job = await new sql.Request().query(`SELECT [jobId], [Status] FROM [Taxonanalytica].[dbo].[oa_det_master] WHERE IT_CODE IN (${placeholders});`);
+                            const job = await new sql.Request().query(`SELECT [jobId], [Status] FROM [taxonanalytica-test-db].[dbo].[oa_det_master] WHERE IT_CODE IN (${placeholders});`);
 
                             const jobs = job?.recordset;
 
