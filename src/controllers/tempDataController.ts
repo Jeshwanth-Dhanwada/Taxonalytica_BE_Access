@@ -23,7 +23,7 @@ export const deleteTempData = async (req: Request, res: Response) => {
 
         fs.writeFileSync(filePath, JSON.stringify({}));
 
-        return res.json({});
+        return res.json([]);
     } catch (error) {
         return InternalServerError(res, error);
     }
