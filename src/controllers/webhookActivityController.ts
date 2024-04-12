@@ -427,45 +427,47 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                     const templateName = nodeCategory == "Waste" ? "waste_batch" : "output_batches";
                     console.log("outputDetails", outputDetails, nodeName, nodeCategory);
-                    axios({
-                        method: "POST",
-                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                        data: {
-                            "messaging_product": "whatsapp",
-                            "recipient_type": "individual",
-                            "to": from,
-                            "type": "template",
-                            "template": {
-                                "name": `${templateName}`,
-                                "language": {
-                                    "code": "en_US"
-                                },
-                                "components": [
-                                    {
-                                        "type": "body",
-                                        "parameters": [
-                                            {
-                                                "type": "text",
-                                                "text": nodeName,
-                                            }]
+                    if (nodeName) {
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                "messaging_product": "whatsapp",
+                                "recipient_type": "individual",
+                                "to": from,
+                                "type": "template",
+                                "template": {
+                                    "name": `${templateName}`,
+                                    "language": {
+                                        "code": "en_US"
                                     },
-                                    {
-                                        "type": "BUTTON",
-                                        "sub_type": "flow",
-                                        "index": "0",
-                                        "parameters": [
-                                            {
-                                                "type": "action",
-                                                "action": {
-                                                    "flow_token": "unused",
+                                    "components": [
+                                        {
+                                            "type": "body",
+                                            "parameters": [
+                                                {
+                                                    "type": "text",
+                                                    "text": nodeName,
+                                                }]
+                                        },
+                                        {
+                                            "type": "BUTTON",
+                                            "sub_type": "flow",
+                                            "index": "0",
+                                            "parameters": [
+                                                {
+                                                    "type": "action",
+                                                    "action": {
+                                                        "flow_token": "unused",
+                                                    }
                                                 }
-                                            }
-                                        ]
-                                    }
-                                ]
+                                            ]
+                                        }
+                                    ]
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     //const inputDetails = readData?.inputDetails;
                     //console.log(inputDetails, readData?.inputId, "inputttDetailsss");
                     let data = readDatas[index];
