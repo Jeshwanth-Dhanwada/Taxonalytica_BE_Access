@@ -8,7 +8,7 @@ import path from "path";
 const axios = require("axios");
 const fs = require('fs');
 
-const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.json");//"D:\CRM-BE\Taxonalytica_BE_Access\constants\activityData.json";
+const filePath = path.resolve(__dirname, "..", "..", "constants", "data.json");//"D:\CRM-BE\Taxonalytica_BE_Access\constants\activityData.json";
 
 // const config = {
 //     user: 'newuser',
@@ -88,7 +88,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
 
-                const readDatas = [] //JSON.parse(fs.readFileSync(filePath));
+                const readDatas = JSON.parse(fs.readFileSync(filePath));
                 let flow = '';
                 let index = 0;
                 console.log(readDatas[0], "flowww");
