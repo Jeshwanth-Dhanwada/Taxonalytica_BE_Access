@@ -8,13 +8,23 @@ import { JobAssign } from "../entity/JobAssign";
 const axios = require("axios");
 const fs = require('fs');
 
-const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\activityData.json";
+const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.json");//"D:\CRM-BE\Taxonalytica_BE_Access\constants\activityData.json";
+
+// const config = {
+//     user: 'newuser',
+//     password: 'Root@123',
+//     server: 'LAPTOP-ODV7LQNH',
+//     database: 'Taxonanalytica',
+//     // options: {
+//     //   encrypt: true, // For Azure SQL Database
+//     // },
+// };
 
 const config = {
-    user: 'newuser',
-    password: 'Root@123',
-    server: 'LAPTOP-ODV7LQNH',
-    database: 'Taxonanalytica',
+    user: 'admin',
+    password: 'Taxonanalytica123',
+    server: 'taxonanalytica-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
+    database: 'taxonanalytica-test-db',
     // options: {
     //   encrypt: true, // For Azure SQL Database
     // },
@@ -24,7 +34,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
     try {
 
         let body_param = req.body;
-        const token = 'EAADs4mGRLYwBO8eCwj9iZAheacSnPeZABYGRoHOFS2n0ZBSXHdDkXgJ3RNUqaiz9ZAz9z4sfvGuuFomVeVRnNOJI1Nwb741q0qvUlc4ddb6JXqFbWuuzw3m47ZAPL82Q5Th2aqjpz4nZBRRdgb2U3H35CVAkxX1Ebb8qINvJkxJgDXB9p9uORF0dtDGAXJd9ZCLxyR06stRvMZBFWoJS3KOR6vVlTZCz0mDNese4ZD';
+        const token = 'EAADs4mGRLYwBO3h4zBswoQG8o9f0ZCReVuGrWAFb9YDMtVkpPjnvBJD5KqgrJP3duCe11wdDcFdOz502YcW6iBVFGoZCr5MartAWk8dqAb6hB36SwWVJqvJD1ZBhRoruUA5ZAF8qyPoqywvtuny9zRYiTO8UWrP7mTQ5UQdLNfxIVJCDJPmOMh2FBkNfKRQlh5QPJRbuAinPWT5HO4KyDRrqIP2kbq6eRJ4ZD';
 
         console.log(JSON.stringify(body_param.object, null, 2));
         const buttonInteractiveObject = {
