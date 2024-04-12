@@ -73,8 +73,8 @@ try {
     }
   });
 
-  app.post("/webhook", sendWebhookRequest);
-  //app.post("/webhook", webhookRequestActivity);
+  //app.post("/webhook", sendWebhookRequest);
+  app.post("/webhook", webhookRequestActivity);
   //app.post("/webhook", webhookTest);
 
   app.get("/health", (_, res) => {
