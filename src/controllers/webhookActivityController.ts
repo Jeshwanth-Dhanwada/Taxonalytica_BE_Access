@@ -310,7 +310,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                     const outputDetails = edgeDetails.filter((item: any) => item.sourceNodeId == nodeId && item.routeId == routeId);
 
-                    console.log(inputBatches, "inputBatches");
+                    console.log(outputDetails, "inputBatches");
                     let messageObject = {
                         "messaging_product": "whatsapp",
                         "recipient_type": "individual",
