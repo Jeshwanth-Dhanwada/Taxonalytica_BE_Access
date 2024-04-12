@@ -91,7 +91,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 const readDatas = JSON.parse(fs.readFileSync(filePath));
                 let flow = '';
                 let index = 0;
-                console.log(readDatas[0], "flowww");
+                console.log(readDatas, "flowww");
                 for (let i = 0; i < readDatas?.length; i++) {
                     if (readDatas[i][from]) {
                         flow = readDatas[i][from];
