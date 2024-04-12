@@ -22,7 +22,7 @@ const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.
 
 const config = {
     user: 'admin',
-    password: 'taxonanalytica-test-db123',
+    password: 'Taxonanalytica123',
     server: 'taxonanalytica-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
     database: 'taxonanalytica-test-db',
     // options: {
