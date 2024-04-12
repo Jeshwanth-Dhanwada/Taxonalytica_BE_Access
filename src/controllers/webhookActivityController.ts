@@ -91,8 +91,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 const readDatas = JSON.parse(fs.readFileSync(filePath));
                 let flow = '';
                 let index = 0;
-                const now = new Date();
-                const timestamp = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`;
+                console.log(readDatas, "flowww");
                 for (let i = 0; i < readDatas?.length; i++) {
                     if (readDatas[i][from]) {
                         flow = readDatas[i][from];
@@ -111,7 +110,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify(readDatas));
                 }
                 if (msg?.type === "text" && flow == "Hi") {
-                    console.log(timestamp, "Time stamp for list of machines");
+                    console.log("resulttt");
                     let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
                     const sql = require('mssql');
                     try {
@@ -182,7 +181,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     }
                 }
                 else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Machine") && flow.toLowerCase() == "hi") {
-                    console.log(timestamp, "Time stamp for list of jobs");
                     const sql = require('mssql');
                     await sql.connect(config);
 
@@ -254,7 +252,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify(data));
                 }
                 else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Job") && flow.toLowerCase() == "hi") {
-                    console.log(timestamp, "Time stamp for list of input batches");
                     const sql = require('mssql');
                     await sql.connect(config);
                     // const readData = JSON.parse(fs.readFileSync(filePath));
@@ -374,7 +371,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify(data));
                 }
                 else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Balance") && flow.toLowerCase() == "hi") {
-                    console.log(timestamp, "Time stamp for entering input details");
                     axios({
                         method: "POST",
                         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
@@ -422,7 +418,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 // const len = readData?.length - 1;
                 if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length && flow.toLowerCase() == "hi") {
                     const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
-                    console.log(timestamp, "Time stamp for entering output details");
+                    console.log(responses, "responsesss");
                     const outputDetails = readDatas[index]?.outputDetail //edgeDetails.filter((item: any) => item.sourceNodeId == nodeId && item.routeId == routeId);
 
                     let nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === outputDetails[0]?.targetNodeId)[0];
@@ -551,7 +547,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 //     fs.writeFileSync(filePath, JSON.stringify([]));
                 // }
                 if (msg?.interactive?.type == 'list_reply' && flow.toLowerCase() == "job") {
-                    console.log(timestamp, "Time stamp for priority");
                     console.log("interactiveee", msg?.interactive);
                     buttonInteractiveObject.body.text =
                         msg?.interactive?.list_reply.id +
@@ -601,7 +596,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 }
 
                 if (msg?.interactive?.type == 'nfm_reply' && flow.toLowerCase() == "job") {
-                    console.log(timestamp, "Time stamp for success message job priority");
                     const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
                     const sql = require('mssql');
 
@@ -644,7 +638,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                 }
 
                 if (msg?.interactive?.type == "button_reply" && flow.toLowerCase() == "job") {
-                    console.log(timestamp, "Time stamp for delivery date");
                     const sql = require('mssql');
                     await sql.connect(config);
                     //const readData = JSON.parse(fs.readFileSync(filePath));
@@ -750,7 +743,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                             });
                             return;
                         } else {
-                            console.log(timestamp, "Time stamp for enter item name");
                             axios({
                                 method: "POST",
                                 url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
@@ -770,6 +762,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     } else {
                         const sql = require('mssql');
                         try {
+                            console.log(msg_body);
                             await sql.connect(config);
                             let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[manager] WHERE phoneno = '${from}'`);
                             if (permission?.recordset?.length == 0) {
@@ -792,7 +785,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                             }
                             let result = await new sql.Request().query(`SELECT IT_CODE, IT_NAME FROM [taxonanalytica-test-db].[dbo].[item_master] WHERE IT_NAME LIKE '${msg_body}%';`);
 
-                            console.log(timestamp, "Time stamp for list of itemss");
+                            console.log(result);
                             const items = result?.recordset.map((item: any) => item?.IT_CODE);
                             const itemNames = result?.recordset.map((item: any) => item?.IT_NAME);
 
