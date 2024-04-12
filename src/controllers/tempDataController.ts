@@ -21,7 +21,7 @@ export const getTempData = async (_: Request, res: Response) => {
 export const deleteTempData = async (req: Request, res: Response) => {
     try {
 
-        fs.writeFileSync(filePath, JSON.stringify({}));
+        fs.writeFileSync(filePath, JSON.stringify([]));
 
         return res.json([]);
     } catch (error) {
