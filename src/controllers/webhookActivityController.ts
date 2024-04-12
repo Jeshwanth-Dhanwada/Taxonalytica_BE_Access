@@ -467,6 +467,43 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                 }
                             }
                         });
+                        let data = readDatas[index];
+                        if (data?.inputId) {
+                            const nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === data?.inputId)[0];
+                            const nodeCategory = nodeDetail?.nodeCategory;
+                            data["inputDetails"].push({
+                                inputId: data?.inputId,
+                                nodeCategory: nodeCategory,
+                                availableQty1: responses?.screen_0_TextInput_0,
+                                availableQty2: responses?.screen_0_TextInput_1,
+                                balanceQty1: responses?.screen_0_TextInput_0,
+                                balanceQty2: responses?.screen_0_TextInput_1,
+                            });
+                            data.inputId = null;
+                            data["outputId"] = outputDetails[0]?.targetNodeId;
+                        } else {
+                            const nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === data?.outputId)[0];
+                            const nodeCategory = nodeDetail?.nodeCategory;
+                            data["outputDetails"].push({
+                                outputId: data?.outputId,
+                                nodeCategory: nodeCategory,
+                                availableQty1: responses?.screen_0_TextInput_0,
+                                availableQty2: responses?.screen_0_TextInput_1,
+                                balanceQty1: responses?.screen_0_TextInput_0,
+                                balanceQty2: responses?.screen_0_TextInput_1,
+                            })
+                            data.outputId = outputDetails[0]?.targetNodeId;
+                        }
+                        const outputDetail = outputDetails.slice(1);
+                        if (outputDetail.length) {
+                            data = { ...data, outputDetail: outputDetail };
+                        } else {
+                            const { edgeDetails, nodeDetails, fgDetails, batchDetails, ...rest } = data;
+                            data = rest;
+                        }
+                        //console.log(data, "inputdataaaaaaa");
+                        readDatas[index] = data;
+                        fs.writeFileSync(filePath, JSON.stringify(readDatas));
                     } else {
                         axios({
                             method: "POST",
@@ -476,7 +513,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                 //to: fromno,
                                 to: from,
                                 text: {
-                                    body: `Successfully updated the delivery for the job ${readDatas[index]?.jobId}`
+                                    body: `Successfully updated the Batch details for the job ${readDatas[index]?.jobId}`
                                 }
                             },
                             headers: {
@@ -488,43 +525,6 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     }
                     //const inputDetails = readData?.inputDetails;
                     //console.log(inputDetails, readData?.inputId, "inputttDetailsss");
-                    let data = readDatas[index];
-                    if (data?.inputId) {
-                        const nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === data?.inputId)[0];
-                        const nodeCategory = nodeDetail?.nodeCategory;
-                        data["inputDetails"].push({
-                            inputId: data?.inputId,
-                            nodeCategory: nodeCategory,
-                            availableQty1: responses?.screen_0_TextInput_0,
-                            availableQty2: responses?.screen_0_TextInput_1,
-                            balanceQty1: responses?.screen_0_TextInput_0,
-                            balanceQty2: responses?.screen_0_TextInput_1,
-                        });
-                        data.inputId = null;
-                        data["outputId"] = outputDetails[0]?.targetNodeId;
-                    } else {
-                        const nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === data?.outputId)[0];
-                        const nodeCategory = nodeDetail?.nodeCategory;
-                        data["outputDetails"].push({
-                            outputId: data?.outputId,
-                            nodeCategory: nodeCategory,
-                            availableQty1: responses?.screen_0_TextInput_0,
-                            availableQty2: responses?.screen_0_TextInput_1,
-                            balanceQty1: responses?.screen_0_TextInput_0,
-                            balanceQty2: responses?.screen_0_TextInput_1,
-                        })
-                        data.outputId = outputDetails[0]?.targetNodeId;
-                    }
-                    const outputDetail = outputDetails.slice(1);
-                    if (outputDetail.length) {
-                        data = { ...data, outputDetail: outputDetail };
-                    } else {
-                        const { edgeDetails, nodeDetails, fgDetails, batchDetails, ...rest } = data;
-                        data = rest;
-                    }
-                    //console.log(data, "inputdataaaaaaa");
-                    readDatas[index] = data;
-                    fs.writeFileSync(filePath, JSON.stringify(readDatas));
                 }
 
                 // if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length == 0 && flow.toLowerCase() == "hi") {
