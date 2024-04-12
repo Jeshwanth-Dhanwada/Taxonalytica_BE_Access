@@ -180,7 +180,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                         await sql.close();
                     }
                 }
-                else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description == "Machine" && flow.toLowerCase() == "hi") {
+                else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Machine") && flow.toLowerCase() == "hi") {
                     const sql = require('mssql');
                     await sql.connect(config);
 
@@ -594,6 +594,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
 
                         });
                     }
+                    fs.writeFileSync(filePath, JSON.stringify([]));
                     console.log('Date Picker Response:', datePickerResponse);
                 }
 
