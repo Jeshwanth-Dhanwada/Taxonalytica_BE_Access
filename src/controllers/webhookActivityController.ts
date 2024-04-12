@@ -23,8 +23,8 @@ const filePath = path.resolve(__dirname, "..", "..", "constants", "activityData.
 const config = {
     user: 'admin',
     password: 'taxonanalytica-test-db123',
-    server: 'taxonanalytica-test-db-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
-    database: 'taxonanalytica-test-db-test-db',
+    server: 'taxonanalytica-test-db.cvwye62cqdiq.ap-south-1.rds.amazonaws.com',
+    database: 'taxonanalytica-test-db',
     // options: {
     //   encrypt: true, // For Azure SQL Database
     // },
