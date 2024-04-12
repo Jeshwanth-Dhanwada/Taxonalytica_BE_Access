@@ -156,7 +156,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                                 {
                                                     "id": "1",
                                                     "title": `${nodeMaster?.nodeId}`,
-                                                    "description": "Machine"
+                                                    "description": `${nodeMaster?.nodeName}`
                                                 }
                                             ]
                                         }
@@ -426,7 +426,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     const nodeCategory = nodeDetail?.nodeCategory;
 
                     const templateName = nodeCategory == "Waste" ? "waste_batch" : "output_batches";
-                    // console.log("outputDetails", outputDetails, nodeName, nodeCategory);
+                    console.log("outputDetails", outputDetails, nodeName, nodeCategory);
                     axios({
                         method: "POST",
                         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
