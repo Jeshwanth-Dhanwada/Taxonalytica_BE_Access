@@ -155,7 +155,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                             "rows": [
                                                 {
                                                     "id": "1",
-                                                    "title": `${nodeMaster?.nodeName}`,
+                                                    "title": `${nodeMaster?.nodeId}`,
                                                     "description": "Machine"
                                                 }
                                             ]
