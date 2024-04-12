@@ -467,6 +467,24 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                                 }
                             }
                         });
+                    } else {
+                        axios({
+                            method: "POST",
+                            url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                            data: {
+                                messaging_product: "whatsapp",
+                                //to: fromno,
+                                to: from,
+                                text: {
+                                    body: `Successfully updated the delivery for the job ${readDatas[index]?.jobId}`
+                                }
+                            },
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+
+                        });
+                        fs.writeFileSync(filePath, JSON.stringify([]));
                     }
                     //const inputDetails = readData?.inputDetails;
                     //console.log(inputDetails, readData?.inputId, "inputttDetailsss");
@@ -509,25 +527,25 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify(readDatas));
                 }
 
-                if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length == 0 && flow.toLowerCase() == "hi") {
-                    axios({
-                        method: "POST",
-                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                        data: {
-                            messaging_product: "whatsapp",
-                            //to: fromno,
-                            to: from,
-                            text: {
-                                body: `Successfully updated the delivery for the job ${readDatas[index]?.jobId}`
-                            }
-                        },
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
+                // if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length == 0 && flow.toLowerCase() == "hi") {
+                //     axios({
+                //         method: "POST",
+                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                //         data: {
+                //             messaging_product: "whatsapp",
+                //             //to: fromno,
+                //             to: from,
+                //             text: {
+                //                 body: `Successfully updated the delivery for the job ${readDatas[index]?.jobId}`
+                //             }
+                //         },
+                //         headers: {
+                //             "Content-Type": "application/json"
+                //         }
 
-                    });
-                    fs.writeFileSync(filePath, JSON.stringify([]));
-                }
+                //     });
+                //     fs.writeFileSync(filePath, JSON.stringify([]));
+                // }
                 if (msg?.interactive?.type == 'list_reply' && flow.toLowerCase() == "job") {
                     console.log("interactiveee", msg?.interactive);
                     buttonInteractiveObject.body.text =
