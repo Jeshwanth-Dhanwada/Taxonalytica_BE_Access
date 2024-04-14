@@ -36,14 +36,13 @@ try {
   app.use(express.json());
   app.use(helmet());
   app.use(cors(
-    // {
-    //   origin: [
-    //     "http://localhost:3000",
-    //     "http://192.168.43.197:3000", // give correct IP
-    //   ],
-    //   credentials: true,
-    //   allowedHeaders: ["Content-Type", "Authorization"],
-    // }
+    {
+      origin: [
+        "http://localhost:3000",
+      ],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }
   ))
   app.use(cookieParser());
 
