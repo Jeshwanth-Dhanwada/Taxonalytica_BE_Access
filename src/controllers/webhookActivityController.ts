@@ -521,7 +521,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                             }
 
                         });
-                        fs.writeFileSync(filePath, JSON.stringify([]));
+                        //fs.writeFileSync(filePath, JSON.stringify([]));
                     }
                     //const inputDetails = readData?.inputDetails;
                     //console.log(inputDetails, readData?.inputId, "inputttDetailsss");
