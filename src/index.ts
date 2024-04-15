@@ -39,6 +39,7 @@ try {
     {
       origin: [
         "http://localhost:3000",
+        "http://192.168.0.124:3000"
       ],
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
