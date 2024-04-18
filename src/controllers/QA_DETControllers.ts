@@ -61,6 +61,7 @@ const QA_DETSchema = Joi.object({
   TargetQty: Joi.number().allow('', null),
   Status: Joi.string().allow('', null),
   priority: Joi.string().allow('', null),
+  allowExcessQty: Joi.string().allow('', null),
   // ItemMaster: Joi.string().required()
 });
 
@@ -127,6 +128,7 @@ export const createOA_DETMaster = async (req: Request, res: Response) => {
     qadet.TargetQty = req.body.ALT_QTY * req.body.Circumfrence / 1000
     qadet.Status = req.body.Status
     qadet.priority = req.body.priority
+    qadet.allowExcessQty = req.body.allowExcessQty
     await qadet.save();
     return res.status(201).json(qadet);
   } catch (error) {
@@ -175,6 +177,7 @@ export const getAllQA_DET = async (_: Request, res: Response) => {
           Status: oaDetail.Status,
           Delivery_Date: oaDetail.Delivery_Date,
           priority: oaDetail.priority,
+          allowExcessQty: oaDetail.allowExcessQty,
 
         };
         commonObjects.push(commonObject);
@@ -277,6 +280,7 @@ export const updateOA_DETMaster = async (req: Request, res: Response) => {
     qadet.TargetQty = req.body.ALT_QTY * req.body.Circumfrence / 1000
     qadet.Status = req.body.Status
     qadet.priority = req.body.priority
+    qadet.allowExcessQty = req.body.allowExcessQty
 
     await qadet.save();
     return res.json(qadet);
@@ -395,6 +399,7 @@ const updateDataOA_DETMaster = async (data: any) => {
     qadet.TargetQty = data.ALT_QTY * data.Circumfrence / 1000
     qadet.Status = data.Status
     qadet.priority = data.priority
+    qadet.allowExcessQty = data.allowExcessQty
     await qadet.save();
 
     return qadet
@@ -468,7 +473,7 @@ const createDataOA_DETMaster = async (data: any) => {
     qadet.TargetQty = data.ALT_QTY * data.Circumfrence / 1000
     qadet.Status = data.Status
     qadet.priority = data.priority
-
+    qadet.allowExcessQty = data.allowExcessQty
     await qadet.save();
 
     return qadet
