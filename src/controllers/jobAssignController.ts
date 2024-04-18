@@ -15,7 +15,7 @@ const JobAssignSchema = Joi.object({
   routeId: Joi.string().required(),
   userId: Joi.string().required(),
   jobId: Joi.string().required(),
-  priority: Joi.string().required(),
+  priority: Joi.string().allow('', null),
   totalProducedQty: Joi.number().allow('', null),
   outstandingQty: Joi.number().allow('', null),
   targetQty: Joi.number().allow('', null),
