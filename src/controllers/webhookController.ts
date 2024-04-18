@@ -5,13 +5,13 @@ import { InternalServerError } from "../response/InternalServerErrorResponse";
 import { OA_DETMaster } from "../entity/OA_DET";
 import { JobAssign } from "../entity/JobAssign";
 import { webhookRequestActivity } from "./webhookActivityController";
-
+import path from "path";
 const axios = require("axios");
 const fs = require('fs');
 //const path = require('path');
 //const filePath = "D:\CRM-BE\Taxonalytica_BE_Access\constants\data.json";
-const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
-
+//const filePath = "/home/ec2-user/Taxonalytica_BE_Access/constants/data.json";
+const filePath = path.resolve(__dirname, "..", "..", "constants", "data.json")
 // const config = {
 //     user: 'newuser',
 //     password: 'Root@123',
@@ -36,7 +36,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
     try {
         let body_param = req.body;
         console.log(req.body, "reqq");
-        const token = 'EAADs4mGRLYwBO0qT3MAAdAr5VPHevUaw6omXrtQ1uoFPZB4UpsrdFbO31EG08htQymnanLZAeZABZAYdXZAx5q5Kh5RHzgBZBY2Q6reiZBS85q5bF7mXiTSfdTLeVkCP4UFPi4UbX8um4Lg1irt2sh76YzbJkhiFZCQaXDOFMbMhRTIswR03XeM1ko7GpZCCX9SidqOop5jTLzLkiMwI0HPdZAhWzZCNnjniCpfZAOUZD';
+        const token = 'EAADs4mGRLYwBO09W51gHwuTA3yU0hF3UNKwOzCOPkBhgHQmnZCFYjZA9BZCebbusaC9m3zqPmy7ZAqj4DFMJjpS5mPqkB4uXUm4Fu0dn0Y4o7bhXZB8inqvfmshZBmAp4ZAbWNCusRmnJ7o42lTEBeZBPzhb1H0J5ejTIln1fDgAQe8ZCVzmlQEFns6yXjRxay19wFqZCELZCKjmSPjKCZBqzBU7cicWpZCZBxDbJsosWZA';
 
         if (body_param.object) {
             console.log(JSON.stringify(body_param, null, 2));
@@ -93,28 +93,28 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                 let from = body_param.entry[0].changes[0].value.messages[0].from;
                 let msg = body_param.entry[0].changes[0].value.messages[0];
                 console.log(phon_no_id, from, msg, "insideeee**");
-                const readData = {}; //JSON.parse(fs.readFileSync(filePath));
+                const readData = JSON.parse(fs.readFileSync(filePath));
 
                 console.log(msg?.type, "readdddd");
 
-                // if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
-                //     axios({
-                //         method: "POST",
-                //         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                //         data: {
-                //             messaging_product: "whatsapp",
-                //             to: from,
-                //             text: {
-                //                 body: `Please complete the current flow`
-                //             }
-                //         },
-                //         headers: {
-                //             "Content-Type": "application/json"
-                //         }
+                if (readData != null && Object.keys(readData).length != 0 && (msg?.text?.body?.toLowerCase() == "ok" || msg?.text?.body.toLowerCase() == "job")) {
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            messaging_product: "whatsapp",
+                            to: from,
+                            text: {
+                                body: `Please complete the current flow`
+                            }
+                        },
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
 
-                //     });
-                //     return;
-                // }
+                    });
+                    return
+                }
 
                 if (msg?.interactive?.type == 'list_reply' && readData?.flow) {
                     axios({
@@ -135,7 +135,7 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                     fs.writeFileSync(filePath, JSON.stringify({}));
                     return;
                 }
-                if (msg?.interactive?.type == 'list_reply') {
+                if (msg?.interactive?.type == 'list_reply' && !readData?.flow) {
                     console.log("interactiveee", msg?.interactive);
                     buttonInteractiveObject.body.text =
                         msg?.interactive?.list_reply.id +
@@ -376,9 +376,9 @@ export const sendWebhookRequest = async (req: Request, res: Response) => {
                             await sql.close();
                         }
                     } else if (msg_body.toLowerCase() == "job") {
-                        const sql = require('mssql');
-                        await sql.connect(config);
-                        let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
+                        // const sql = require('mssql');
+                        // await sql.connect(config);
+                        // let permission = await new sql.Request().query(`SELECT [empId] FROM [taxonanalytica-test-db].[dbo].[employee] WHERE phoneno = '${from}'`);
                         // if (permission?.recordset?.length == 0) {
                         //     axios({
                         //         method: "POST",

@@ -17,6 +17,7 @@ const cookieParser = require('cookie-parser');
 //const axios = require("axios");
 import { sendWebhookRequest } from "./controllers/webhookController";
 import { webhookRequestActivity } from './controllers/webhookActivityController';
+import { webhookTest } from './controllers/webhooktestController';
 
 
 
@@ -35,14 +36,14 @@ try {
   app.use(express.json());
   app.use(helmet());
   app.use(cors(
-    // {
-    //   origin: [
-    //     "http://localhost:3000",
-    //     "http://192.168.43.197:3000", // give correct IP
-    //   ],
-    //   credentials: true,
-    //   allowedHeaders: ["Content-Type", "Authorization"],
-    // }
+    {
+      origin: [
+        "http://localhost:3000",
+        "http://192.168.0.124:3000"
+      ],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }
   ))
   app.use(cookieParser());
 
@@ -72,8 +73,9 @@ try {
     }
   });
 
-  app.post("/webhook", sendWebhookRequest);
-  //app.post("/webhook", webhookRequestActivity);
+  //app.post("/webhook", sendWebhookRequest);
+  app.post("/webhook", webhookRequestActivity);
+  //app.post("/webhook", webhookTest);
 
   app.get("/health", (_, res) => {
     res.status(200).json({
