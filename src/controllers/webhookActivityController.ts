@@ -34,7 +34,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
     try {
 
         let body_param = req.body;
-        const token = 'EAADs4mGRLYwBOyMRijwVfb5qy0XxZAyJ5ENEIMoawOXhecp0t8k0ycUhsXqNnZAaygt3ANNXdZAQx4r7QYZBZBuDzdjnrlvP4GZCLZCbZBDpTE4GB75PxX2wl0jtN1mGMb0IuIvnAuHeCah0rHWSodQBtFJBmQxzpk0in8Nndr8TONtsPH7obHW2c6lDYnvqRXKO1SofIKz59J5WTpC0K5LTDHIxpAkNOXPIlIoZD';
+        const token = 'EAADs4mGRLYwBOZBAZCF0sQSQ53Y7uieceYlQfYZClOvBzZAuZBZCTp439cZAZBIHt3aFatc2nwIZCVdYnLwVpkiomprkoZChVaGkNZATSEsVZAYGZAN4ibrf4AYIMsH89Wix1leu3VnthGo56HmHZCMqWM1dK3gtsU1bZCx3vzKe2l8cms2r0bWrsa0wanrHNZC4lB2EpmuWZBxteZAQIlUumO6cY0MhjUABB5lHnKCoTWpKkZD';
 
         console.log(JSON.stringify(body_param.object, null, 2));
         const buttonInteractiveObject = {
@@ -363,6 +363,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                         batchDetails: batchDetails, edgeDetails: edgeDetails,
                         fgDetails: fgDetails, fgId: fgId, routeId: routeId,
                         jobAssignId: jobAssignId, outputDetail: outputDetails,
+                        inputQty: inputQty,
                         inputId: inputNodesFromEdge[0],
                         inputDetails: [],
                         outputDetails: [],
@@ -370,7 +371,7 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     //console.log(data, "dataeeeee");
                     fs.writeFileSync(filePath, JSON.stringify(data));
                 }
-                else if (msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Balance") && flow.toLowerCase() == "hi") {
+                else if ((msg?.interactive?.type == "list_reply" && msg?.interactive?.list_reply?.description.includes("Balance")) && flow.toLowerCase() == "hi") {
                     axios({
                         method: "POST",
                         url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
@@ -407,16 +408,67 @@ export const webhookRequestActivity = async (req: Request, res: Response) => {
                     const batchId = msg?.interactive?.list_reply?.title;
 
                     let data = readDatas[index];
-
-                    data = { ...data, batchId: batchId };
+                    let inputQty = readDatas[index]?.inputQty;
+                    data = { ...data, batchId: batchId, inputQty: inputQty.slice(1) };
                     readDatas[index] = data;
-                    // console.log(data, readDatas[index], "batchhhhhh");
+                    console.log(data, readDatas[index], "batchhhhhh");
+                    fs.writeFileSync(filePath, JSON.stringify(readDatas));
+
+                } else if (msg?.interactive?.type == "nfm_reply" && readDatas[index]?.inputQty?.length) {
+                    axios({
+                        method: "POST",
+                        url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                        data: {
+                            "messaging_product": "whatsapp",
+                            "recipient_type": "individual",
+                            "to": from,
+                            "type": "template",
+                            "template": {
+                                "name": "input_batches",
+                                "language": {
+                                    "code": "en_US"
+                                },
+                                "components": [
+                                    {
+                                        "type": "BUTTON",
+                                        "sub_type": "flow",
+                                        "index": "0",
+                                        "parameters": [
+                                            {
+                                                "type": "action",
+                                                "action": {
+                                                    "flow_token": "unused",
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    });
+                    const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
+                    let data = readDatas[index];
+                    const nodeDetail = readDatas[index]?.nodeDetails?.filter((item1: any) => item1.nodeId === data?.inputId)[0];
+                    const nodeCategory = nodeDetail?.nodeCategory;
+                    data["inputDetails"].push({
+                        inputId: data?.inputId,
+                        nodeCategory: nodeCategory,
+                        availableQty1: responses?.screen_0_TextInput_0,
+                        availableQty2: responses?.screen_0_TextInput_1,
+                        balanceQty1: responses?.screen_0_TextInput_0,
+                        balanceQty2: responses?.screen_0_TextInput_1,
+                    });
+                    let inputQty = readDatas[index]?.inputQty;
+                    let nodeId = inputQty[0];
+                    data = { ...data, inputQty: inputQty.slice(1), inputId: nodeId };
+                    readDatas[index] = data;
+                    console.log(data, readDatas[index], "inputbatchh");
                     fs.writeFileSync(filePath, JSON.stringify(readDatas));
 
                 }
                 // const readData = JSON.parse(fs.readFileSync(filePath));
                 // const len = readData?.length - 1;
-                if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length && flow.toLowerCase() == "hi") {
+                else if (msg?.interactive?.type == 'nfm_reply' && readDatas[index].outputDetail?.length && flow.toLowerCase() == "hi") {
                     const responses = JSON.parse(msg?.interactive.nfm_reply.response_json);
                     console.log(responses, "responsesss");
                     const outputDetails = readDatas[index]?.outputDetail //edgeDetails.filter((item: any) => item.sourceNodeId == nodeId && item.routeId == routeId);
